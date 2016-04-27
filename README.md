@@ -52,28 +52,46 @@ Two examples are included showing the use of two and ten sensors.
 
 ## Library reference
 
-* ```SonarI2C(uint8_t address, uint8_t pin, uint16_t max_mm)```
-   Constructor. Sets the I2C address of the pin expander (0x20 - 0x27, 0x38 - 0x3F), the pin on the expander (0-7) and the maximum range in mm (0-4000). 
+* Constructor. Call once for each sensor outside loop(0 and setup(). This sets the I2C address of the pin expander (0x20 - 0x27, 0x38 - 0x3F), the pin on the expander (0-7) and the maximum range in mm (0-4000). 
 
-* ```static void begin();                                     // call from setup(). Defaults to pin 2 and 50ms
-   static void begin(uint8_t interrupt);                    // same thing but set the pin
-   static void begin(uint8_t interrupt, uint16_t spacing);  // same thing but set the pin and spacing```
-   call one of the begin() functions from setup() before you call init() on the individual SonarI2C members. This sets the interrupt pin to use and the spacing between sonar pings. The default is 50ms to ensure no interference from old echoes. Reduce this for faster but less reliable operation.
+ ```c
+    SonarI2C(uint8_t address, uint8_t pin, uint16_t max_mm)
+```
 
-*  ```static boolean inverse```
-   by default the interrupt pin is looking for a positive echo pulse. If you are using NOR logic (as in the breadboard example) set this to
-   'true'
-* ```void init()```
-   call this on each SonarI2C from setup(). It initilizes some values and places it in the polling queue
+* call one of the begin() functions from setup() before you call init() on the individual SonarI2C members. This sets the interrupt pin to use and the spacing between sonar pings. The default is 50ms to ensure no interference from old echoes. Reduce this for faster but less reliable operation.
 
-* ```boolean enabled();  // query if enabled
-   void enable(boolean enabled);   // set _enable```
-   Disabling sensors that you are not interested in right now allows the other sensors to poll more often.
+ ```c
+    static void begin();                                     // call from setup(). Defaults to pin 2 and 50ms
+    static void begin(uint8_t interrupt);                    // same thing but set the pin
+   static void begin(uint8_t interrupt, uint16_t spacing);   // same thing but set the pin and spacing
+```
 
-* ```static void doSonar()```
-  Call this every loop(). If it is time, it will poll the next enabled sensor.
+*  by default the interrupt pin is looking for a positive echo pulse. If you are using NOR logic (as in the breadboard example) set 'inverse' to 'true'
 
-* foo
+ ```c
+    static boolean inverse
+```
+
+*  call init() on each SonarI2C from setup(). It initilizes some values and places it in the polling queue
+
+ ```c
+    void init()
+```
+
+*  Disabling sensors that you are not interested in right now allows the other sensors to poll more often.
+
+ ```c
+    boolean enabled();  // query if enabled
+    void enable(boolean enabled);   // set _enable
+```
+
+* Call this every loop(). If it is time, it will poll the next enabled sensor.
+
+ ```c
+    static void doSonar()
+```
+
+* Return values
  ```c
     int16_t mm();    // return distance in mm.
     int16_t cm();    // return distance in cm
