@@ -63,19 +63,19 @@ Two examples are included showing the use of two and ten sensors.
  ```c
     static void begin();                                     // call from setup(). Defaults to pin 2 and 50ms
     static void begin(uint8_t interrupt);                    // same thing but set the pin
-   static void begin(uint8_t interrupt, uint16_t spacing);   // same thing but set the pin and spacing
+    static void begin(uint8_t interrupt, uint16_t spacing);   // same thing but set the pin and spacing
 ```
 
 *  by default the interrupt pin is looking for a positive echo pulse. If you are using NOR logic (as in the breadboard example) set 'inverse' to 'true'
 
  ```c
-    static boolean inverse
+    static boolean inverse;
 ```
 
 *  call init() on each SonarI2C from setup(). It initilizes some values and places it in the polling queue
 
  ```c
-    void init()
+    void init();
 ```
 
 *  Disabling sensors that you are not interested in right now allows the other sensors to poll more often.
@@ -88,7 +88,7 @@ Two examples are included showing the use of two and ten sensors.
 * Call this every loop(). If it is time, it will poll the next enabled sensor.
 
  ```c
-    static void doSonar()
+    static void doSonar();
 ```
 
 * Return values
