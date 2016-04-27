@@ -74,7 +74,7 @@ Two examples are included showing the use of two and ten sensors.
   Call this every loop(). If it is time, it will poll the next enabled sensor.
 
 * ```
-       int16_t mm();    // return distance in mm
+       int16_t mm();    // return distance in mm.
        int16_t cm();    // return distance in cm
        int16_t inch();  // return distance in inches
        int16_t us();    // return echo time in microseconds
