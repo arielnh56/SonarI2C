@@ -2,7 +2,7 @@
 
 Version: 1.0.0<br>
 Release date: 2016 April 28<br>
-[redhunter.com](http://redhunter.com/blog/category/technology/arduino/)
+[redhunter.com](http://redhunter.com/blog/2016/04/28/sonari2c-multiple-hc-sr04-sensors-on-arduino-i2c/)
 
 
 ## Summary
@@ -102,7 +102,7 @@ Two examples are included showing the use of two and ten sensors.
 
 ## Version history
 
-* 1.0.0 (2016 April 26): Original release.
+* 1.0.0 (2016 April 28): Original release.
 
 
 
