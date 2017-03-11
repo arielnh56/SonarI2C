@@ -52,7 +52,7 @@ void SonarI2C::_endPulse() {
   if (now < _pulseBegin) return; // we started in the future - micros rollover or the like
   if (now - _pulseBegin > 38000) return;  // spec sheet says it always comes back in 38ms so something went wrong
   uint16_t pulseLen = now - _pulseBegin; // calculate length of pulse
-  _currentSonar->_micros = (pulseLen > _currentSonar->_max_micros) ? 0 : pulseLen; // set out-of-range to zero
+  _currentSonar->_micros = constrain(pulseLen, 0, _currentSonar->_max_micros); // set out-of-range to max
 }
 
 // public member functions
