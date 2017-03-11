@@ -27,6 +27,7 @@ class SonarI2C {
     static void begin(uint8_t interrupt);                    // same thing but set the pin
     static void begin(uint8_t interrupt, uint16_t spacing);  // same thing but set the pin and spacing
     static void doSonar();                                   // call every loop()
+    static uint8_t maxOOR;                                   // how many OOR to skip. Raise this in noisy environments
 
   private:
     uint8_t  _address;                   // PCF8574 0x20 - 0x27 or PCF8574A 0x38 - 0x3F
@@ -36,7 +37,7 @@ class SonarI2C {
     SonarI2C *_nextSonar;                // link to the next SonarI2C in the list
     boolean  _enabled;                   // skip if enabled = FALSE
     void     _send_ping();               // trigger the sensor and set the interrupt
-
+    uint8_t  _OORcount;                  // count how many out of range pings in a row
     static uint32_t _pulseBegin;         // to remember when the pulse started
     static uint16_t _spacing;            // time between pings - default 50ms
     static uint8_t  _interrupt;          // interrupt pin - default 2

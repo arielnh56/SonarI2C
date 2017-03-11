@@ -42,8 +42,9 @@ void setup() {
   Serial.begin(115200);
   SonarI2C::begin();   // initialize bus, pins etc
   // SonarI2C::begin(2);   // alternate form, set interrupt pin, 2 is the default
-  // SonarI2C::begin(2, 50);   // alternate form also sets spacing, 50ms is the default
+  // SonarI2C::begin(2, 200);   // alternate form also sets spacing, 50ms is the default
   SonarI2C::inverse = false;
+  // SonarI2C::maxOOR = 5;
   for (uint8_t i = 0; i < numsonars; i++) {
     sonars[i].init();
   }

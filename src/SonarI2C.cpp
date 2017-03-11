@@ -7,6 +7,7 @@ SonarI2C::SonarI2C(uint8_t address, uint8_t pin, uint16_t max_mm) {
   _pin = constrain(pin, 0, 7);
   _max_micros = constrain(max_mm, 20, 4000) / 0.170145; // constrain to spec sheet
   _enabled = true;
+  _OORcount = 0;
 }
 
 // member initializer - call from setup()
@@ -50,9 +51,18 @@ void SonarI2C::_endPulse() {
   detachInterrupt(digitalPinToInterrupt(_interrupt)); // clean up after ourselves
   // ignore wacko values
   if (now < _pulseBegin) return; // we started in the future - micros rollover or the like
-  if (now - _pulseBegin > 38000) return;  // spec sheet says it always comes back in 38ms so something went wrong
   uint16_t pulseLen = now - _pulseBegin; // calculate length of pulse
-  _currentSonar->_micros = constrain(pulseLen, 0, _currentSonar->_max_micros); // set out-of-range to max
+  if (pulseLen > _currentSonar->_max_micros) { // took too long 0 = out of range
+    _currentSonar->_OORcount++;
+    if (_currentSonar->_OORcount > maxOOR) {
+      _currentSonar->_micros = 0;
+    } else {
+      return;  //skip this time
+    }
+  } else {
+    _currentSonar->_OORcount = 0;
+    _currentSonar->_micros = pulseLen;
+  }
 }
 
 // public member functions
@@ -84,6 +94,7 @@ uint32_t SonarI2C::_pulseBegin = 0;
 uint8_t SonarI2C::_interrupt = SONAR_INT_PIN;
 uint16_t SonarI2C::_spacing = SONAR_SPACING;
 boolean SonarI2C::inverse = false;
+uint8_t SonarI2C::maxOOR = 1;
 
 // public static class functions
 // call a begin() from setup()
