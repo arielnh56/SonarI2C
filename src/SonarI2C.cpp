@@ -29,7 +29,6 @@ void SonarI2C::init() {
 // private member functions
 // send the trigger signal and attach the interrupt
 void SonarI2C::_send_ping() {
-  if (digitalRead(_interrupt) == inverse ? LOW : HIGH) return; // interrupt pin is active - skip
   _pulseBegin = 0; // cleared until we see it
   attachInterrupt(digitalPinToInterrupt(_interrupt), _startPulse, inverse ? FALLING : RISING); // NOR gate - pulse is inverted
   Wire.beginTransmission(_address);
@@ -118,6 +117,7 @@ void SonarI2C::begin(uint8_t interrupt) {
 // call from loop() every cycle
 void SonarI2C::doSonar() {
   if (!_currentSonar) return; // no sonars initiated
+  if (digitalRead(_interrupt) == inverse ? LOW : HIGH) return; // interrupt pin is active - skip
   if (_last_sonar_millis + _spacing < millis()) {
     // look for next enabled sonar
     SonarI2C *thisSonar = _currentSonar->_nextSonar;
