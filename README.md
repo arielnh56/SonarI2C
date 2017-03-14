@@ -1,15 +1,16 @@
 # SonarI2C library for Arduino
 
-Version: 1.0.0<br>
-Release date: 2016 April 28<br>
+Version: 1.1.1<br>
+Release date: 2017 March 13<br>
 [redhunter.com](http://redhunter.com/blog/2016/04/28/sonari2c-multiple-hc-sr04-sensors-on-arduino-i2c/)
-
+[hackaday.io](https://hackaday.io/project/19950-hc-sr04-i2c-octopus-octosonar)
+[tindie.com](https://www.tindie.com/products/arielnh56/octosonar-connect-8-x-hc-sr04-to-arduino/)
 
 ## Summary
 
 This is a library for the Arduino IDE that allows the polling of multiple ultrasonic distance sensors using the I2C bus and a single hardware interrupt pin. It assumes a PCF8574(A) type port expander to trigger the sensors, and external logic circuitry to multiplex the echo signals.
 
-It has been tested with the HC-SR04 sensor - the cheapest and most widely available at this time. Up to 10 units have been tested on a breadboard, using two PCF8574 for triggers and two CD4078BE 8-inpout OR/NOR chips.
+It has been tested with the HC-SR04 sensor - the cheapest and most widely available at this time. Up to 12 units have been tested on a breadboard, using two of my Octosonar modules in a daisy-chain configuration.
 
 ## Supported Platforms
 
@@ -19,7 +20,7 @@ This library is designed to work with the Arduino IDE versions 1.6.x or later; i
 
 ### Hardware
 
-The minimum setup to use this usefully requires
+The minimum setup to breadboard this requires
 
 * a PCF8574 or PCF8574A IC
 * two HC-SR04 sensors
@@ -27,6 +28,8 @@ The minimum setup to use this usefully requires
 * example sketch SonarI2Cv2
 
 ![basic breadboard test](https://github.com/arielnh56/SonarI2C/blob/master/extras/sonarI2Cdemo1_bb.png) 
+
+For pracitcal use you can replicate my prototype design at [redhunter.com](http://redhunter.com/blog/2016/04/28/sonari2c-multiple-hc-sr04-sensors-on-arduino-i2c/) or purchase my Octosonar boards at [tindie.com](https://www.tindie.com/products/arielnh56/octosonar-connect-8-x-hc-sr04-to-arduino/)
 
 ### Software
 
@@ -48,7 +51,7 @@ If this does not work, you can manually install the library:
 
 ## Examples
 
-Two examples are included showing the use of two and ten sensors.
+Two examples are included showing the use of two and ten sensors. Aother example will display 8 outputs on an LCD.
 
 ## Library reference
 
@@ -70,6 +73,12 @@ Two examples are included showing the use of two and ten sensors.
 
  ```c
     static boolean inverse;
+```
+
+* by default we skip one out of range/failed echo,keeping the last value. It may be useful to raise this count in sub-optimal echo environments.
+
+ ```c
+    static uint8_t maxOOR;                                   // how many OOR to skip. Raise this in noisy environments
 ```
 
 *  call init() on each SonarI2C from setup(). It initilizes some values and places it in the polling queue
@@ -103,7 +112,8 @@ Two examples are included showing the use of two and ten sensors.
 ## Version history
 
 * 1.0.0 (2016 April 28): Original release.
-
+* 1.1.0 (2017 March 13): Improved OOR handling, MIT license.
+* 1.1.1 (2017 March 13): Update README
 
 
 
