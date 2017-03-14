@@ -1,3 +1,8 @@
+/*
+  SonarI2C.cpp
+  Copyright (c) 2016,2017 Alastair Young.
+  This project is licensed under the terms of the MIT license.
+*/
 #ifndef SONARI2C_H
 #define SONARI2C_H
 
